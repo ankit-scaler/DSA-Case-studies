@@ -1,0 +1,246 @@
+
+<style>
+* { box-sizing: border-box; }
+.app { font-family: var(--font-sans); padding: 1rem 0; }
+.case-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 1.5rem; }
+.case-pill { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-tertiary); background: var(--color-background-primary); cursor: pointer; transition: border-color 0.15s, background 0.15s; }
+.case-pill:hover { border-color: var(--color-border-secondary); background: var(--color-background-secondary); }
+.case-pill.active { border-color: var(--color-border-primary); background: var(--color-background-secondary); }
+.pill-num { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 4px; white-space: nowrap; }
+.pill-title { font-size: 13px; color: var(--color-text-primary); flex: 1; }
+.pill-diff { font-size: 11px; color: var(--color-text-secondary); white-space: nowrap; }
+.back-btn { font-size: 13px; color: var(--color-text-secondary); background: none; border: none; cursor: pointer; padding: 0 0 1rem; display: flex; align-items: center; gap: 6px; }
+.badge { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 4px; display: inline-block; margin-bottom: 12px; letter-spacing: 0.04em; }
+.case-title { font-size: 22px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 6px; }
+.case-subtitle { font-size: 14px; color: var(--color-text-secondary); margin: 0 0 20px; line-height: 1.5; }
+.meta-row { display: flex; gap: 24px; margin-bottom: 20px; flex-wrap: wrap; }
+.meta-item { display: flex; flex-direction: column; gap: 3px; }
+.meta-label { font-size: 11px; color: var(--color-text-secondary); letter-spacing: 0.06em; }
+.meta-val { font-size: 14px; font-weight: 500; color: var(--color-text-primary); }
+.meta-val.green { color: var(--color-text-success); }
+.meta-val.amber { color: var(--color-text-warning); }
+.meta-val.red { color: var(--color-text-danger); }
+.ticket { border-left: 3px solid var(--color-border-warning); padding: 14px 16px; background: var(--color-background-secondary); border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0; margin-bottom: 20px; }
+.ticket-from { font-size: 12px; font-weight: 500; color: var(--color-text-warning); margin: 0 0 10px; }
+.ticket-body { font-size: 13px; color: var(--color-text-primary); line-height: 1.7; margin: 0; }
+.section-label { font-size: 11px; font-weight: 500; color: var(--color-text-secondary); letter-spacing: 0.08em; margin-bottom: 8px; }
+.symptoms-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.symptom-card { border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 10px 12px; background: var(--color-background-primary); }
+.symptom-tag { font-size: 10px; color: var(--color-text-secondary); letter-spacing: 0.06em; margin-bottom: 4px; }
+.symptom-val { font-size: 13px; color: var(--color-text-primary); font-weight: 500; }
+.context-card { border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 12px 14px; background: var(--color-background-secondary); margin-bottom: 16px; }
+.ctx-row { font-size: 13px; color: var(--color-text-primary); margin-bottom: 4px; }
+.ctx-row:last-child { margin-bottom: 0; }
+.ctx-row span { color: var(--color-text-secondary); }
+.complexity-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.complexity-card { border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 10px 12px; background: var(--color-background-primary); }
+.c-tag { font-size: 10px; color: var(--color-text-secondary); letter-spacing: 0.06em; margin-bottom: 4px; }
+.c-val { font-size: 14px; font-weight: 500; color: var(--color-text-primary); font-family: var(--font-mono); }
+.c-note { font-size: 11px; color: var(--color-text-secondary); margin-top: 2px; }
+.reveal-btn { width: 100%; padding: 9px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); font-size: 13px; color: var(--color-text-secondary); cursor: pointer; margin-bottom: 10px; }
+.reveal-btn:hover { background: var(--color-background-secondary); }
+.solution-box { border: 0.5px solid var(--color-border-success); border-radius: var(--border-radius-md); padding: 12px 14px; background: var(--color-background-success); margin-bottom: 12px; display: none; }
+.solution-box.show { display: block; }
+.sol-label { font-size: 11px; font-weight: 500; color: var(--color-text-success); letter-spacing: 0.06em; margin-bottom: 6px; }
+.sol-text { font-size: 13px; color: var(--color-text-primary); line-height: 1.7; }
+.sol-code { font-family: var(--font-mono); font-size: 12px; background: var(--color-background-primary); border-radius: var(--border-radius-md); padding: 10px 12px; margin-top: 8px; color: var(--color-text-primary); white-space: pre; line-height: 1.7; border: 0.5px solid var(--color-border-tertiary); }
+.discuss-btn { width: 100%; padding: 9px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); font-size: 13px; color: var(--color-text-info); cursor: pointer; }
+.discuss-btn:hover { background: var(--color-background-info); }
+</style>
+
+<div class="app">
+<h2 class="sr-only" style="position:absolute;left:-9999px">DSA case study questions in Emergent-style format</h2>
+
+<div id="list-view">
+  <div style="margin-bottom:16px">
+    <p style="font-size:13px;color:var(--color-text-secondary);margin:0">10 cases · Java &amp; C++ · Arrays, Loops, Strings</p>
+  </div>
+  <div class="case-list" id="case-list"></div>
+</div>
+
+<div id="detail-view" style="display:none"></div>
+</div>
+
+<script>
+const cases = [
+  {
+    id:"ARRAY-1.1", lang:"Java", topic:"Arrays", diff:"Foundational", time:"5:00",
+    title:"The phantom zero",
+    subtitle:"A student's array printer always outputs one extra zero. The array has exactly 5 elements. Nobody touched the data.",
+    ticket:{from:"TKT-101 · Priya S. · CS101 Student", body:"I wrote a program to print all my quiz scores stored in an array. It prints all five of them correctly, but there's always a 0 at the end that I never stored. I've checked the values — they're all positive numbers. The loop looks right to me. What's going on?"},
+    symptoms:[{tag:"SYMPTOM A · OUTPUT",val:"Extra 0 printed after last element"},{tag:"SYMPTOM B · LOOP",val:"Loop runs 6 times on 5-element array"}],
+    context:[["Language","Java"],["Array size","5 elements (indices 0–4)"],["Loop condition","i <= scores.length"],["Array type","int[] — default value is 0"]],
+    complexity:{time:"O(n)",timeNote:"One pass through the array",space:"O(1)",spaceNote:"No extra memory used"},
+    solution:{text:"The condition i <= scores.length makes the loop run while i is 0, 1, 2, 3, 4, AND 5. But index 5 doesn't exist — Java returns the default int value (0) or throws ArrayIndexOutOfBoundsException. The fix is one character: change <= to <.",code:"// Buggy\nfor (int i = 0; i <= scores.length; i++)\n\n// Fixed\nfor (int i = 0; i < scores.length; i++)"}
+  },
+  {
+    id:"LOOP-2.1", lang:"C++", topic:"Loops", diff:"Foundational", time:"5:00",
+    title:"The infinite countdown",
+    subtitle:"A C++ program meant to count down from 10 to 1. It never stops. The developer is sure the logic is correct.",
+    ticket:{from:"TKT-102 · Ahmad R. · Junior Developer", body:"I wrote a simple countdown timer for a game. It should print 10, 9, 8 ... down to 1 and stop. Instead the terminal just spams numbers forever and I have to force-quit. I checked — the loop condition looks right. It's supposed to stop when i hits 0."},
+    symptoms:[{tag:"SYMPTOM A · LOOP",val:"Program never terminates"},{tag:"SYMPTOM B · LOGIC",val:"Loop variable grows instead of shrinks"}],
+    context:[["Language","C++"],["Intent","Count down: 10 → 1"],["Loop written","for(int i=10; i>0; i++)"],["Expected iterations","10"]],
+    complexity:{time:"O(∞)",timeNote:"Infinite — never reaches base case",space:"O(1)",spaceNote:"Stack stays flat (no recursion)"},
+    solution:{text:"i++ increments the counter each iteration instead of decrementing it. Since i starts at 10 and keeps growing, the condition i > 0 is always true. Change i++ to i-- and the loop terminates correctly after 10 iterations.",code:"// Buggy\nfor (int i = 10; i > 0; i++)\n\n// Fixed\nfor (int i = 10; i > 0; i--)"}
+  },
+  {
+    id:"STR-3.1", lang:"Java", topic:"Strings", diff:"Foundational", time:"5:00",
+    title:"Identical strings that aren't equal",
+    subtitle:"A login checker returns false even when the correct username is entered. Same characters, same case — still fails.",
+    ticket:{from:"TKT-103 · Divya M. · Backend Intern", body:"I'm building a simple login form. When I type the exact username that's stored, it still says 'user not found'. I've printed both strings side by side — they look completely identical. I'm comparing them with == and it always returns false. Am I missing something obvious?"},
+    symptoms:[{tag:"SYMPTOM A · LOGIC",val:"== returns false for identical strings"},{tag:"SYMPTOM B · MEMORY",val:"Two String objects with same content"}],
+    context:[["Language","Java"],["Comparison used","enteredName == storedName"],["String type","java.lang.String (object)"],["Local test","Works if same literal used"]],
+    complexity:{time:"O(n)",timeNote:".equals() scans up to n chars",space:"O(1)",spaceNote:"No new strings allocated"},
+    solution:{text:"In Java, == compares object references (memory addresses), not content. Two String objects with identical text are different objects in memory, so == returns false. Always use .equals() to compare string content.",code:'// Buggy\nif (enteredName == storedName)\n\n// Fixed\nif (enteredName.equals(storedName))'}
+  },
+  {
+    id:"ARRAY-4.1", lang:"C++", topic:"Arrays", diff:"Foundational", time:"6:00",
+    title:"Corrupted sum from a tiny array",
+    subtitle:"Six scores are stored. The sum comes out as a massive negative number. All inputs are positive single digits.",
+    ticket:{from:"TKT-104 · Leo T. · C++ Beginner", body:"I have 6 student scores I want to add up. All of them are between 1 and 10. But when I print the sum it's something like -2147483612, which is obviously wrong. I declared the array and filled it. The loop sums correctly for the first few but then breaks."},
+    symptoms:[{tag:"SYMPTOM A · MEMORY",val:"Buffer overflow into adjacent memory"},{tag:"SYMPTOM B · OUTPUT",val:"Sum produces large negative number"}],
+    context:[["Language","C++"],["Array declared","int arr[5]"],["Values stored","6 elements written"],["Overflow type","Stack buffer overflow"]],
+    complexity:{time:"O(n)",timeNote:"Linear sum loop",space:"O(n) → declared wrong",spaceNote:"Declared n=5, needs n=6"},
+    solution:{text:"int arr[5] reserves space for exactly 5 elements (indices 0–4). Writing a 6th value (arr[5] = ...) writes into memory beyond the array — overwriting adjacent variables. The corrupted sum is the result of reading that trashed memory. Fix: declare int arr[6].",code:"// Buggy\nint arr[5];  // only 5 slots\narr[5] = 95; // writes outside bounds!\n\n// Fixed\nint arr[6];  // 6 slots for 6 values"}
+  },
+  {
+    id:"LOOP-5.1", lang:"Java", topic:"Loops", diff:"Foundational", time:"5:00",
+    title:"First element always skipped",
+    subtitle:"A name search loop works perfectly — except it never checks the first name in the list, even when it matches.",
+    ticket:{from:"TKT-105 · Nneka O. · CS Student", body:"I have an array of student names and I'm searching for all names starting with 'A'. It finds them correctly — but I've noticed it always skips the very first name. Even if names[0] starts with 'A', it's never printed. Every other position works fine."},
+    symptoms:[{tag:"SYMPTOM A · LOOP",val:"Loop starts at index 1, not 0"},{tag:"SYMPTOM B · OUTPUT",val:"Index 0 element never processed"}],
+    context:[["Language","Java"],["Array type","String[]"],["Loop start","int i = 1"],["Valid start","Should be int i = 0"]],
+    complexity:{time:"O(n)",timeNote:"Visits n-1 elements (missing first)",space:"O(1)",spaceNote:"In-place search, no extra array"},
+    solution:{text:"Java arrays are 0-indexed. Starting the loop at i = 1 skips names[0] entirely. The fix is to initialize the loop counter at 0 so every element is visited.",code:"// Buggy\nfor (int i = 1; i < names.length; i++)\n\n// Fixed\nfor (int i = 0; i < names.length; i++)"}
+  },
+  {
+    id:"STR-6.1", lang:"C++", topic:"Strings", diff:"Intermediate", time:"7:00",
+    title:"Palindrome checker fails on odd-length words",
+    subtitle:"'racecar' is reported as NOT a palindrome. 'abba' works fine. The reversal logic looks correct.",
+    ticket:{from:"TKT-106 · Riku N. · Algorithms Student", body:"My palindrome function works for even-length words like 'abba' but fails on odd-length ones like 'racecar' or 'madam'. It returns false even though they are palindromes. I compare characters from both ends moving inward."},
+    symptoms:[{tag:"SYMPTOM A · LOGIC",val:"Off-by-one in middle index calc"},{tag:"SYMPTOM B · TYPE",val:"size_t unsigned comparison bug"}],
+    context:[["Language","C++"],["Method","Compare chars from both ends"],["Loop condition","i <= str.length()/2"],["Affected","All odd-length strings"]],
+    complexity:{time:"O(n/2) = O(n)",timeNote:"Visits half the string",space:"O(1)",spaceNote:"No copy of string made"},
+    solution:{text:"str.length() returns size_t (unsigned). For 'racecar' (length 7): 7/2 = 3. The condition i <= 3 compares indices (0,6), (1,5), (2,4), (3,3) — the middle char against itself, which is always equal but wastes a check. The real bug: use i < str.length()/2 and cast length() to int to avoid unsigned subtraction wrapping.",code:"// Buggy\nfor (int i = 0; i <= str.length()/2; i++)\n\n// Fixed\nint n = (int)str.length();\nfor (int i = 0; i < n/2; i++)"}
+  },
+  {
+    id:"ARRAY-7.1", lang:"Java", topic:"Arrays", diff:"Intermediate", time:"7:00",
+    title:"Sorting a 'copy' sorts the original too",
+    subtitle:"A developer sorts a backup array to find the median. The original array is also sorted afterward. No one touched it.",
+    ticket:{from:"TKT-107 · Carlos V. · Java Developer", body:"I need to find the median of an array without changing the original order (I use it later for ranked display). I make a copy, sort the copy, and read the middle value. But afterward the original array is also sorted. It's like the copy doesn't actually exist separately."},
+    symptoms:[{tag:"SYMPTOM A · MEMORY",val:"Copy points to same array object"},{tag:"SYMPTOM B · OUTPUT",val:"Original array order destroyed"}],
+    context:[["Language","Java"],["Copy method","int[] copy = original"],["Sort used","Arrays.sort(copy)"],["Root cause","Reference copy, not data copy"]],
+    complexity:{time:"O(n log n)",timeNote:"Sorting dominates",space:"O(n)",spaceNote:"True copy needs n extra slots"},
+    solution:{text:"int[] copy = original copies the reference — both variables point to the same array in heap memory. Sorting copy sorts the only array that exists. To make an independent copy, use Arrays.copyOf() or clone().",code:"// Buggy (reference copy)\nint[] copy = original;\n\n// Fixed (data copy)\nint[] copy = Arrays.copyOf(original, original.length);\n// or: int[] copy = original.clone();"}
+  },
+  {
+    id:"LOOP-8.1", lang:"C++", topic:"Loops", diff:"Intermediate", time:"7:00",
+    title:"Multiplication table rows look identical",
+    subtitle:"A 5×5 times table prints fine — but every row shows the same values. The nested loop logic looks correct at first glance.",
+    ticket:{from:"TKT-108 · Fatima Z. · C++ Student", body:"I'm generating a 5x5 multiplication table with nested loops. But every row prints the exact same set of numbers. Row 1, row 2, row 3 — all identical. The inner loop seems to work, but the outer loop doesn't seem to change between rows."},
+    symptoms:[{tag:"SYMPTOM A · LOOP",val:"Outer loop variable overwritten by inner"},{tag:"SYMPTOM B · OUTPUT",val:"All rows print same values"}],
+    context:[["Language","C++"],["Structure","Nested for-loop"],["Bug","Same variable i used in both loops"],["Effect","Inner loop resets outer loop counter"]],
+    complexity:{time:"O(n²)",timeNote:"n rows × n columns",space:"O(1)",spaceNote:"Values printed, not stored"},
+    solution:{text:"Both loops use the variable i. When the inner loop finishes, i = n (the limit). The outer loop then checks i < n — which is false — and exits early, printing only one effective row. Use distinct variable names: i for outer, j for inner.",code:"// Buggy\nfor (int i=1; i<=5; i++)\n  for (int i=1; i<=5; i++)  // same i!\n\n// Fixed\nfor (int i=1; i<=5; i++)\n  for (int j=1; j<=5; j++)  // j for inner"}
+  },
+  {
+    id:"STR-9.1", lang:"Java", topic:"Strings", diff:"Intermediate", time:"6:00",
+    title:"String reversal won't compile",
+    subtitle:"A string reversal function throws a compile error before it even runs. The syntax looks standard.",
+    ticket:{from:"TKT-109 · Yusuf A. · Java Beginner", body:"I'm trying to reverse a string by building it character by character in a loop. My code doesn't even compile — it gives a type mismatch error on the first line where I initialize the result. Also my mentor said even if it compiled, the approach is slow. I'm not sure why."},
+    symptoms:[{tag:"SYMPTOM A · COMPILE",val:"Single quotes used instead of double"},{tag:"SYMPTOM B · PERF",val:"String += in loop is O(n²)"}],
+    context:[["Language","Java"],["Error line","String result = ''"],["Root cause","'' is a char literal in Java"],["Better fix","Use StringBuilder"]],
+    complexity:{time:"O(n²) → O(n)",timeNote:"String concat vs StringBuilder",space:"O(n)",spaceNote:"Result string grows to length n"},
+    solution:{text:"Single quotes denote a char in Java, not a String. String result = '' is a type mismatch — fix with double quotes. But the deeper issue: strings are immutable, so result += ch creates a new String every iteration — O(n²) total. Use StringBuilder for O(n).",code:'// Buggy\nString result = \'\';  // char, not String!\nfor (char ch : s.toCharArray())\n  result += ch;  // O(n²)\n\n// Fixed\nStringBuilder sb = new StringBuilder();\nfor (char ch : s.toCharArray())\n  sb.append(ch);\nString result = sb.toString(); // O(n)'}
+  },
+  {
+    id:"ARRAY-10.1", lang:"Java / C++", topic:"Arrays", diff:"Intermediate", time:"6:00",
+    title:"Max finder returns 0 for all-negative arrays",
+    subtitle:"A function finds the maximum value in an array. It works for positive numbers but always returns 0 when every value is negative.",
+    ticket:{from:"TKT-110 · Mei L. · Algorithms Student", body:"I wrote a max-finder that works perfectly for arrays like {3, 7, 1, 9}. But when I test it on {-3, -7, -1, -5}, it returns 0 — which isn't even in the array. I can't figure out why 0 is showing up at all."},
+    symptoms:[{tag:"SYMPTOM A · LOGIC",val:"Initial max = 0 acts as a false floor"},{tag:"SYMPTOM B · EDGE CASE",val:"Fails on all-negative input arrays"}],
+    context:[["Language","Java / C++"],["Initialisation","int max = 0"],["Problem","0 is never beaten by negatives"],["Fix","Seed max with first element"]],
+    complexity:{time:"O(n)",timeNote:"Single pass through array",space:"O(1)",spaceNote:"One variable tracks the max"},
+    solution:{text:"Initializing max = 0 assumes 0 is a valid starting point. If all values are negative, none of them is ever greater than 0, so max stays 0 — a value that was never in the array. Always seed max with the first element, then loop from index 1.",code:"// Buggy\nint max = 0;\nfor (int i = 0; i < arr.length; i++)\n\n// Fixed\nint max = arr[0];  // seed with real value\nfor (int i = 1; i < arr.length; i++)"}
+  }
+];
+
+const diffColor = { Foundational: 'green', Intermediate: 'amber' };
+const diffBg = { Foundational: '#EAF3DE', Intermediate: '#FAEEDA' };
+const diffFg = { Foundational: '#3B6D11', Intermediate: '#854F0B' };
+
+function renderList() {
+  const el = document.getElementById('case-list');
+  el.innerHTML = cases.map((c,i) => `
+    <div class="case-pill" onclick="openCase(${i})">
+      <span class="pill-num" style="background:${diffBg[c.diff]};color:${diffFg[c.diff]}">${c.id}</span>
+      <span class="pill-title">${c.title}</span>
+      <span style="font-size:11px;color:var(--color-text-secondary);margin-right:6px">${c.lang}</span>
+      <span class="pill-diff" style="color:${diffFg[c.diff]}">${c.diff}</span>
+    </div>
+  `).join('');
+}
+
+function openCase(idx) {
+  const c = cases[idx];
+  document.getElementById('list-view').style.display = 'none';
+  const dv = document.getElementById('detail-view');
+  dv.style.display = 'block';
+  dv.innerHTML = `
+    <button class="back-btn" onclick="goBack()"><i class="ti ti-arrow-left" aria-hidden="true" style="font-size:15px"></i> All cases</button>
+    <span class="badge" style="background:${diffBg[c.diff]};color:${diffFg[c.diff]}">${c.id}</span>
+    <h2 class="case-title">${c.title}</h2>
+    <p class="case-subtitle">${c.subtitle}</p>
+    <div class="meta-row">
+      <div class="meta-item"><span class="meta-label">TARGET TIME</span><span class="meta-val" style="color:var(--color-text-warning)">${c.time}</span></div>
+      <div class="meta-item"><span class="meta-label">DIFFICULTY</span><span class="meta-val ${diffColor[c.diff]}">${c.diff}</span></div>
+      <div class="meta-item"><span class="meta-label">LANGUAGE</span><span class="meta-val">${c.lang}</span></div>
+      <div class="meta-item"><span class="meta-label">TOPIC</span><span class="meta-val">${c.topic}</span></div>
+    </div>
+    <div class="ticket">
+      <p class="ticket-from">${c.ticket.from}</p>
+      <p class="ticket-body">${c.ticket.body}</p>
+    </div>
+    <p class="section-label">REPORTED SYMPTOMS</p>
+    <div class="symptoms-grid">
+      ${c.symptoms.map(s=>`<div class="symptom-card"><div class="symptom-tag">${s.tag}</div><div class="symptom-val">${s.val}</div></div>`).join('')}
+    </div>
+    <p class="section-label">ADDITIONAL CONTEXT</p>
+    <div class="context-card">
+      ${c.context.map(r=>`<div class="ctx-row"><span>${r[0]}: </span>${r[1]}</div>`).join('')}
+    </div>
+    <p class="section-label">COMPLEXITY ANALYSIS</p>
+    <div class="complexity-grid">
+      <div class="complexity-card">
+        <div class="c-tag">TIME COMPLEXITY</div>
+        <div class="c-val">${c.complexity.time}</div>
+        <div class="c-note">${c.complexity.timeNote}</div>
+      </div>
+      <div class="complexity-card">
+        <div class="c-tag">SPACE COMPLEXITY</div>
+        <div class="c-val">${c.complexity.space}</div>
+        <div class="c-note">${c.complexity.spaceNote}</div>
+      </div>
+    </div>
+    <button class="reveal-btn" id="reveal-btn-${idx}" onclick="revealSolution(${idx})">Reveal solution</button>
+    <div class="solution-box" id="sol-${idx}">
+      <div class="sol-label">SOLUTION</div>
+      <div class="sol-text">${c.solution.text}</div>
+      <pre class="sol-code">${c.solution.code}</pre>
+    </div>
+    <button class="discuss-btn" onclick="sendPrompt('Walk me through the solution for ${c.id}: ${c.title.replace(/'/g,"\\'")}')">Discuss this case in depth ↗</button>
+  `;
+}
+
+function revealSolution(idx) {
+  document.getElementById('sol-'+idx).classList.add('show');
+  document.getElementById('reveal-btn-'+idx).style.display = 'none';
+}
+
+function goBack() {
+  document.getElementById('detail-view').style.display = 'none';
+  document.getElementById('list-view').style.display = 'block';
+}
+
+renderList();
+</script>
